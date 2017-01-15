@@ -11,7 +11,9 @@
 	        </ul>
 	    </div>
 	@endif
+
 	<form method="POST">
+	{{ method_field('PUT') }}
 	    <div class="form-group">
 	        <label for="name">Naam</label>
 	        <input type="text" name="name" id="name" class="form-control" value="{{ $product->name }}" />
@@ -29,6 +31,7 @@
 	            <label for="status"><input type="checkbox" value="{{ $product->status ? 1 : 0 }}" name="status" checked>Actief</label>
 	        </div>
 	    </div>
+
 	    {{ csrf_field() }}
 	    <input type="submit" name="submit" class="btn btn-succes" value="Opslaan">
 	</form>

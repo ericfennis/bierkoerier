@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Product;
+use Illuminate\Http\Request;
+
 
 class ProductsController extends Controller
 {
@@ -20,21 +21,31 @@ class ProductsController extends Controller
 	  	return view('products.index', compact('products'));
 	}
 
+	public function show($id) {
+
+    	$product = Product::find($id);
+
+	  	return view('products.show', compact('product'));
+	}
+
+
 
 	public function create() {
 
 		return view('products.new');
 	}
 
-	public function edit(Request $request, Product $product) {
+	public function edit($id) {
 
-		return view('products.edit', ['product' => $product]);
+		$product = Product::find($id);
+		// /$result = Product::find($product);
+		return view('products.edit', compact('product'));
 	}
 
-	public function update(Request $request) {
-
-	    $product = $request;
+	public function update(Request $request, $id) {
 	    
+		$product = Product::find($id);
+
 	    $this->validate($request,
 	    [
 	        'name' => 'required|max:255',
@@ -42,6 +53,7 @@ class ProductsController extends Controller
 	        'description' => 'max:255',
 	        'status' => 'required',
 	    ]);
+	    
 	    
 	    $product->name = $request->name;
 	    $product->price = $request->price;
@@ -71,5 +83,20 @@ class ProductsController extends Controller
 	    $product->save();
     
 	    return redirect('/products');
+	}
+
+	public function delete($id)
+	{
+		$product = Product::find($id);
+
+	  	return view('products.delete', compact('product'));
+	}
+	
+	public function destroy($id)
+	{
+		$product = Product::find($id);
+
+		$product->delete();
+        return redirect('/products');
 	}
 }
